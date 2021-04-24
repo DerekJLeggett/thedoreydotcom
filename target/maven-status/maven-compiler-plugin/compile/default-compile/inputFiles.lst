@@ -1,0 +1,11 @@
+/mnt/f/media/src/main/java/com/leggett/media/photo/PhotoController.java
+/mnt/f/media/src/main/java/com/leggett/media/audio/AudioRepository.java
+/mnt/f/media/src/main/java/com/leggett/media/video/VideoController.java
+/mnt/f/media/src/main/java/com/leggett/media/audio/Audio.java
+/mnt/f/media/src/main/java/com/leggett/media/video/Video.java
+/mnt/f/media/src/main/java/com/leggett/media/photo/Photo.java
+/mnt/f/media/src/main/java/com/leggett/media/audio/AudioController.java
+/mnt/f/media/src/main/java/com/leggett/media/photo/PhotoRepository.java
+/mnt/f/media/src/main/java/com/leggett/media/MediaApplication.java
+/mnt/f/media/src/main/java/com/leggett/media/photo/ImageMeta.java
+/mnt/f/media/src/main/java/com/leggett/media/video/VideoRepository.java

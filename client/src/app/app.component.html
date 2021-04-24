@@ -1,0 +1,36 @@
+<div class="container-fluid text-center">
+  <!-- <h2>Photos</h2> -->
+  <nav aria-label="Previous/Next page">
+    <ul class="pagination justify-content-center pagination-lg">
+      <li class="page-item"><a class="page-link" href="#" (click)="getPrevious()">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#" (click)="getNext()">Next</a></li>
+    </ul>
+  </nav>
+    <img *ngFor="let photo of photos" src="/api/getPhoto?id={{photo.id}}&isThumbnail=true" class="img-thumbnail" width="400" height="400" alt={{photo.fileName}} data-toggle="modal" data-target="#photoModal" (click)="showModal($event)">
+  <nav aria-label="Previous/Next page">
+    <ul class="pagination justify-content-center pagination-lg">
+      <li class="page-item"><a class="page-link" href="#" (click)="getPrevious()">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#" (click)="getNext()">Next</a></li>
+    </ul>
+  </nav>
+  <div class="modal fade" tabindex="-1" role="dialog" id="photoModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+        </div>
+        <div class="modal-body">
+            <img class="img-fluid" src={{imagePath}} id="show-img">
+        </div>
+        <div class="modal-footer">
+          <nav aria-label="Previous/Next photo">
+            <ul class="pagination justify-content-center pagination-lg">
+              <li class="page-item"><a class="page-link" href="#" (click)="getPrevious()">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#" (click)="getNext()">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
