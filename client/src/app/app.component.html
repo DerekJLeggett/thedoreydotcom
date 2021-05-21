@@ -1,12 +1,58 @@
 <div class="container-fluid text-center">
-  <!-- <h2>Photos</h2> -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">TheDorey.com</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="#" (click)="getAllPhotos(0, 8, 'Photo')">Photo</a>
+          <a class="nav-link" href="#" (click)="getAllPhotos(0, 8, 'PDF')">PDF</a>
+          <a class="nav-link" href="#" (click)="getAllPhotos(0, 8, 'Video')">Video</a>
+          <a class="nav-link" href="#" (click)="getAllPhotos(0, 8, 'Audio')">Audio</a>
+        </div>
+      </div>
+    </div>
+  </nav>
   <nav aria-label="Previous/Next page">
     <ul class="pagination justify-content-center pagination-lg">
       <li class="page-item"><a class="page-link" href="#" (click)="getPrevious()">Previous</a></li>
       <li class="page-item"><a class="page-link" href="#" (click)="getNext()">Next</a></li>
     </ul>
   </nav>
-    <img *ngFor="let photo of photos" src="/api/getPhoto?id={{photo.id}}&isThumbnail=true" class="img-thumbnail" width="400" height="400" alt={{photo.fileName}} data-toggle="modal" data-target="#photoModal" (click)="showModal($event)">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3" *ngFor="let photo of photos">
+        <figure *ngIf="type === 'Photo'">
+          <figcaption>{{photo.fileName}}</figcaption>
+          <img src="/api/getPhoto?id={{photo.id}}" class="img-thumbnail" alt={{photo.fileName}} data-toggle="modal"
+            data-target="#photoModal" (click)="showModal($event)">
+        </figure>
+        <figure *ngIf="type === 'PDF'">
+          <figcaption>{{photo.fileName}}</figcaption>
+          <a href="/api/getPDF?id={{photo.id}}" target="_blank"><img src="/assets/PDF_32.png" alt={{photo.fileName}}
+              class="img-fluid"></a>
+        </figure>
+        <figure *ngIf="type === 'Video'">
+          <figcaption>{{photo.fileName}}</figcaption>
+          <video *ngIf="type === 'Video'" width="320" height="240" controls preload="none">
+            <source src="/api/getVideo?id={{photo.id}}#t=0.1" type="video/mp4">
+            Sorry, your browser doesn't support embedded videos.
+          </video>
+        </figure>
+        <figure *ngIf="type === 'Audio'">
+          <figcaption>{{photo.fileName}}</figcaption>
+          <audio controls preload="none">
+            <source src="/api/getAudio?id={{photo.id}}" type="audio/mp4">
+            Your browser does not support the audio element.
+          </audio>
+        </figure>
+      </div>
+    </div>
+  </div>
+
   <nav aria-label="Previous/Next page">
     <ul class="pagination justify-content-center pagination-lg">
       <li class="page-item"><a class="page-link" href="#" (click)="getPrevious()">Previous</a></li>
@@ -16,19 +62,8 @@
   <div class="modal fade" tabindex="-1" role="dialog" id="photoModal">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-        </div>
         <div class="modal-body">
-            <img class="img-fluid" src={{imagePath}} id="show-img">
-        </div>
-        <div class="modal-footer">
-          <nav aria-label="Previous/Next photo">
-            <ul class="pagination justify-content-center pagination-lg">
-              <li class="page-item"><a class="page-link" href="#" (click)="getPrevious()">Previous</a></li>
-              <li class="page-item"><a class="page-link" href="#" (click)="getNext()">Next</a></li>
-            </ul>
-          </nav>
+          <img class="img-fluid" src={{imagePath}} id="show-img">
         </div>
       </div>
     </div>

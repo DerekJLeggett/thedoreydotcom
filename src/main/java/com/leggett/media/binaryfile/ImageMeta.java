@@ -1,4 +1,4 @@
-package com.leggett.media.photo;
+package com.leggett.media.binaryfile;
 
 import java.io.File;
 import java.io.IOException;

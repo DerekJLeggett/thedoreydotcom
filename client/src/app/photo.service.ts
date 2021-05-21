@@ -13,8 +13,8 @@ export class PhotoService {
 
   constructor(private http: HttpClient) { }
 
-  getAllPhotos(page: number, size: number): Observable<IPhoto[]> {
-    return this.http.get<IPhoto[]>('/api/photos?page=' + page + '&size=' + size)
+  getAllPhotos(page: number, size: number, type: string): Observable<IPhoto[]> {
+    return this.http.get<IPhoto[]>('/api/files?page=' + page + '&size=' + size + '&type=' + type)
       .pipe(
         map(response => response)
       );

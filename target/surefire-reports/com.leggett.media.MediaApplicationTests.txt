@@ -1,9 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.leggett.media.MediaApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 10.941 s <<< FAILURE! - in com.leggett.media.MediaApplicationTests
-contextLoads  Time elapsed: 0.001 s  <<< ERROR!
-java.lang.IllegalStateException: Failed to load ApplicationContext
-Caused by: java.lang.IllegalStateException: Failed to execute CommandLineRunner
-Caused by: java.lang.NullPointerException
-
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.414 s - in com.leggett.media.MediaApplicationTests
