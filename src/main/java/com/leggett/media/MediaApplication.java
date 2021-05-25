@@ -14,18 +14,20 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
-
-import org.imgscalr.Scalr;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.leggett.media.binaryfile.Audio;
 import com.leggett.media.binaryfile.BinaryFileRepository;
 import com.leggett.media.binaryfile.PDF;
 import com.leggett.media.binaryfile.Photo;
 import com.leggett.media.binaryfile.Video;
 
+import org.apache.commons.imaging.Imaging;
+import org.apache.commons.imaging.common.ImageMetadata;
+import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
+import org.apache.commons.imaging.formats.tiff.TiffField;
+import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
+import org.imgscalr.Scalr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,6 +39,7 @@ public class MediaApplication {
 	public static String FILE_ROOT = "";
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 	BinaryFileRepository binaryFileRepository;
+	MetadataExample metadataExample = new MetadataExample();
 
 	public static void main(String[] args) throws IOException {
 		FILE_ROOT = args[0];
@@ -47,17 +50,35 @@ public class MediaApplication {
 	public CommandLineRunner demo(BinaryFileRepository binaryFileRepository) {
 		return (args) -> {
 			File thumbnailDirectory = new File(FILE_ROOT + "/thumbnails");
-			if(!thumbnailDirectory.exists()){
+			if (!thumbnailDirectory.exists()) {
 				thumbnailDirectory.mkdir();
-			};
+			}
+			;
 			Set<String> files = getFiles(FILE_ROOT);
 			for (String file : files) {
 				if (file.toLowerCase().endsWith(".jpg") || file.toLowerCase().endsWith(".jpeg")) {
 					// BufferedImage image = ImageIO.read(new File(file));
 					// image = resizeImage(image, 1080);
 					// ImageIO.write(image, "jpg", thumbnailDirectory);
-					Date dateTaken = null;
-					binaryFileRepository.save(new Photo(file, dateTaken));
+					// get all metadata stored in EXIF format (ie. from JPEG or TIFF).
+					try {
+						final ImageMetadata metadata = Imaging.getMetadata(new File(file));
+						if (metadata instanceof JpegImageMetadata) {
+							String dateTaken = null;
+							final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
+							final TiffField field = jpegMetadata
+									.findEXIFValueWithExactMatch(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL);
+							if (field != null) {
+								dateTaken = field.getValueDescription();
+								dateTaken = dateTaken.replace("'", "");
+								Date date = formatter.parse(dateTaken);
+								binaryFileRepository.save(new Photo(file, date));
+							}
+						}
+
+					} catch (Exception e) {
+						logger.error(e.getMessage());
+					}
 				} else if (file.toLowerCase().endsWith(".pdf")) {
 					binaryFileRepository.save(new PDF(file));
 				} else if (file.toLowerCase().endsWith(".mov") || file.toLowerCase().endsWith(".mp4")) {
