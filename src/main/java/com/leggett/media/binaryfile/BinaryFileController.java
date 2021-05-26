@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +25,7 @@ public class BinaryFileController {
 
     @GetMapping(path = "/files")
     public @ResponseBody Iterable<BinaryFile> getFiles(int page, int size, String type) {
+        //, Sort.by(Sort.Direction.DESC, "dateTaken")
         Pageable filePage = PageRequest.of(page, size);
         Page<BinaryFile> binaryFilesPage = binaryFileRepository.findAllBydtype(filePage, type);
         List<BinaryFile> binaryFilesList = binaryFilesPage.getContent();

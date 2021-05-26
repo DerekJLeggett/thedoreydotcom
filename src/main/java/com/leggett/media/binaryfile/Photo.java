@@ -4,22 +4,23 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Photo extends BinaryFile{
-    private Date dateTaken;
-
-    protected Photo(){}
-
-    public Photo(String fileName, Date dateTaken){
-        this.setFileName(fileName);
-       this.dateTaken = dateTaken;
-    }
-
-    public Date getDateTaken(){
-        return this.dateTaken;
-    }
-
-    public void setDateTaken(Date dateTaken){
+    public Photo(String fileName, Date dateTaken, Double latitude, Double longitude) {
+        this.fileName = fileName;
         this.dateTaken = dateTaken;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
+
+    public Photo(){}
+
+    private Date dateTaken;
+    private Double latitude;
+    private Double longitude;
 }

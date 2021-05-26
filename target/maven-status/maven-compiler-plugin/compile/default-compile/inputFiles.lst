@@ -1,8 +1,15 @@
-/home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/MediaApplication.java
+/home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/MetadataExample.java
 /home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/binaryfile/Video.java
-/home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/binaryfile/BinaryFileRepository.java
 /home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/binaryfile/Audio.java
+/home/derek/git/thedoreydotcom/src/main/java/com/leggett/upload/StorageException.java
+/home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/MvcConfig.java
+/home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/MediaApplication.java
+/home/derek/git/thedoreydotcom/src/main/java/com/leggett/upload/FileUploadController.java
+/home/derek/git/thedoreydotcom/src/main/java/com/leggett/upload/StorageFileNotFoundException.java
+/home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/binaryfile/BinaryFileRepository.java
 /home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/binaryfile/BinaryFile.java
+/home/derek/git/thedoreydotcom/src/main/java/com/leggett/upload/StorageService.java
+/home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/WebSecurityConfig.java
 /home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/binaryfile/Photo.java
 /home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/binaryfile/BinaryFileController.java
 /home/derek/git/thedoreydotcom/src/main/java/com/leggett/media/binaryfile/ImageMeta.java

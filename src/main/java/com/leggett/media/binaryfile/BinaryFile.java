@@ -6,29 +6,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class BinaryFile {
     @Column(insertable = false, updatable = false) private String dtype;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
-	private String fileName;
-
-    protected BinaryFile(){}
-
-    public BinaryFile(String fileName){
-        this.fileName = fileName;
-    }
-
-    public Long getId(){
-        return this.id;
-    }
-
-    public String getFileName(){
-        return this.fileName;
-    }
-
-    public void setFileName(String fileName){
-        this.fileName = fileName;
-    }
+    public long id;
+	public String fileName;
 }

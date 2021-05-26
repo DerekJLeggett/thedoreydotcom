@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
+
 import com.leggett.media.binaryfile.Audio;
 import com.leggett.media.binaryfile.BinaryFileRepository;
 import com.leggett.media.binaryfile.PDF;
@@ -24,7 +26,9 @@ import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffField;
+import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
+import org.apache.commons.imaging.formats.tiff.constants.GpsTagConstants;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +41,11 @@ import org.springframework.context.annotation.Bean;
 public class MediaApplication {
 	private static final Logger logger = LoggerFactory.getLogger(MediaApplication.class);
 	public static String FILE_ROOT = "";
+	public static String TARGET_IMAGE_DIRECTORY = "/home/derek/git/thedoreydotcom/client/src/assets/images/";
+	public static String TARGET_PDF_DIRECTORY = "/home/derek/git/thedoreydotcom/client/src/assets/pdfs/";
+	public static String TARGET_VIDEO_DIRECTORY = "/home/derek/git/thedoreydotcom/client/src/assets/videos/";
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 	BinaryFileRepository binaryFileRepository;
-	MetadataExample metadataExample = new MetadataExample();
-
 	public static void main(String[] args) throws IOException {
 		FILE_ROOT = args[0];
 		SpringApplication.run(MediaApplication.class, args);
@@ -49,30 +54,35 @@ public class MediaApplication {
 	@Bean
 	public CommandLineRunner demo(BinaryFileRepository binaryFileRepository) {
 		return (args) -> {
-			File thumbnailDirectory = new File(FILE_ROOT + "/thumbnails");
-			if (!thumbnailDirectory.exists()) {
-				thumbnailDirectory.mkdir();
-			}
-			;
+			File targetImageDirectory = new File(TARGET_IMAGE_DIRECTORY);
 			Set<String> files = getFiles(FILE_ROOT);
 			for (String file : files) {
 				if (file.toLowerCase().endsWith(".jpg") || file.toLowerCase().endsWith(".jpeg")) {
-					// BufferedImage image = ImageIO.read(new File(file));
-					// image = resizeImage(image, 1080);
-					// ImageIO.write(image, "jpg", thumbnailDirectory);
-					// get all metadata stored in EXIF format (ie. from JPEG or TIFF).
 					try {
-						final ImageMetadata metadata = Imaging.getMetadata(new File(file));
-						if (metadata instanceof JpegImageMetadata) {
+						File imageFile = new File(file);
+						File targetFile = new File(targetImageDirectory, imageFile.getName());
+						final ImageMetadata metadata = Imaging.getMetadata(imageFile);
+						if (metadata instanceof JpegImageMetadata && !targetFile.exists()) {
 							String dateTaken = null;
 							final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
-							final TiffField field = jpegMetadata
+							final TiffField dateTakenfield = jpegMetadata
 									.findEXIFValueWithExactMatch(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL);
-							if (field != null) {
-								dateTaken = field.getValueDescription();
+							if (dateTakenfield != null) {
+								dateTaken = dateTakenfield.getValueDescription();
 								dateTaken = dateTaken.replace("'", "");
 								Date date = formatter.parse(dateTaken);
-								binaryFileRepository.save(new Photo(file, date));
+								final TiffImageMetadata exifMetadata = jpegMetadata.getExif();
+								if (null != exifMetadata) {
+									final TiffImageMetadata.GPSInfo gpsInfo = exifMetadata.getGPS();
+									if (null != gpsInfo) {
+										final double longitude = gpsInfo.getLongitudeAsDegreesEast();
+										final double latitude = gpsInfo.getLatitudeAsDegreesNorth();
+										binaryFileRepository.save(new Photo(file, date, latitude, longitude));
+									}
+								}
+								BufferedImage image = ImageIO.read(imageFile);
+								image = resizeImage(image, 1080);
+								ImageIO.write(image, "jpg", targetFile);
 							}
 						}
 

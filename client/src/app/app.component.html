@@ -27,12 +27,12 @@
       <div class="col-sm-3" *ngFor="let photo of photos">
         <figure *ngIf="type === 'Photo'">
           <figcaption>{{photo.fileName}}</figcaption>
-          <img src="/api/getPhoto?id={{photo.id}}" class="img-thumbnail" alt={{photo.fileName}} data-toggle="modal"
+          <img src="/assets/images/{{photo.fileName}}" class="img-thumbnail" alt={{photo.fileName}} data-toggle="modal"
             data-target="#photoModal" (click)="showModal($event)">
         </figure>
         <figure *ngIf="type === 'PDF'">
           <figcaption>{{photo.fileName}}</figcaption>
-          <a href="/api/getPDF?id={{photo.id}}" target="_blank"><img src="/assets/PDF_32.png" alt={{photo.fileName}}
+          <a href="/assets/{{photo.fileName}}" target="_blank"><img src="/assets/PDF_32.png" alt={{photo.fileName}}
               class="img-fluid"></a>
         </figure>
         <figure *ngIf="type === 'Video'">
