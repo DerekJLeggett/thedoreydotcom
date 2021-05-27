@@ -1,5 +1,7 @@
 package com.leggett.media.binaryfile;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 
 import lombok.Getter;
@@ -10,8 +12,11 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class PDF extends BinaryFile {
 
-    public PDF(String fileName) {
+    public PDF(String fileName, Date dateTaken, double latitude, double longitude) {
         this.fileName = fileName;
+        this.dateTaken = dateTaken;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
 }

@@ -48,6 +48,7 @@ public class MediaApplication {
 	BinaryFileRepository binaryFileRepository;
 	public static void main(String[] args) throws IOException {
 		FILE_ROOT = args[0];
+		TARGET_IMAGE_DIRECTORY = args[1];
 		SpringApplication.run(MediaApplication.class, args);
 	}
 
@@ -70,14 +71,14 @@ public class MediaApplication {
 							if (dateTakenfield != null) {
 								dateTaken = dateTakenfield.getValueDescription();
 								dateTaken = dateTaken.replace("'", "");
-								Date date = formatter.parse(dateTaken);
+								Date createDate = formatter.parse(dateTaken);
 								final TiffImageMetadata exifMetadata = jpegMetadata.getExif();
 								if (null != exifMetadata) {
 									final TiffImageMetadata.GPSInfo gpsInfo = exifMetadata.getGPS();
 									if (null != gpsInfo) {
 										final double longitude = gpsInfo.getLongitudeAsDegreesEast();
 										final double latitude = gpsInfo.getLatitudeAsDegreesNorth();
-										binaryFileRepository.save(new Photo(file, date, latitude, longitude));
+										binaryFileRepository.save(new Photo(file, createDate, latitude, longitude));
 									}
 								}
 								BufferedImage image = ImageIO.read(imageFile);
@@ -90,11 +91,11 @@ public class MediaApplication {
 						logger.error(e.getMessage());
 					}
 				} else if (file.toLowerCase().endsWith(".pdf")) {
-					binaryFileRepository.save(new PDF(file));
+					//binaryFileRepository.save(new PDF(file, createDate, latitude, longitude));
 				} else if (file.toLowerCase().endsWith(".mov") || file.toLowerCase().endsWith(".mp4")) {
-					binaryFileRepository.save(new Video(file));
+					//binaryFileRepository.save(new Video(file, createDate, latitude, longitude));
 				} else if (file.toLowerCase().endsWith(".m4a")) {
-					binaryFileRepository.save(new Audio(file));
+					//binaryFileRepository.save(new Audio(file, createDate, latitude, longitude));
 				}
 			}
 		};

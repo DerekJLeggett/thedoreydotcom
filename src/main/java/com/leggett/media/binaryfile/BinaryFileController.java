@@ -25,8 +25,7 @@ public class BinaryFileController {
 
     @GetMapping(path = "/files")
     public @ResponseBody Iterable<BinaryFile> getFiles(int page, int size, String type) {
-        //, Sort.by(Sort.Direction.DESC, "dateTaken")
-        Pageable filePage = PageRequest.of(page, size);
+        Pageable filePage = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dateTaken"));
         Page<BinaryFile> binaryFilesPage = binaryFileRepository.findAllBydtype(filePage, type);
         List<BinaryFile> binaryFilesList = binaryFilesPage.getContent();
         for(BinaryFile binaryFile: binaryFilesList){
@@ -36,46 +35,46 @@ public class BinaryFileController {
         return binaryFilesList;
     }
 
-    @GetMapping(value="getPhoto", produces = MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody byte[] getPhotoById(Long id){
-        return getFileById(id);
-    }
+    // @GetMapping(value="getPhoto", produces = MediaType.IMAGE_JPEG_VALUE)
+    // public @ResponseBody byte[] getPhotoById(Long id){
+    //     return getFileById(id);
+    // }
 
-    @GetMapping(value="getPDF", produces=MediaType.APPLICATION_PDF_VALUE)
-    public @ResponseBody byte[] getPDFById(Long id){
-        return getFileById(id);
-    }
+    // @GetMapping(value="getPDF", produces=MediaType.APPLICATION_PDF_VALUE)
+    // public @ResponseBody byte[] getPDFById(Long id){
+    //     return getFileById(id);
+    // }
 
-    @GetMapping(value="getVideo", produces="video/mp4")
-    public @ResponseBody byte[] getVideoById(Long id){
-        return getFileById(id);
-    }
+    // @GetMapping(value="getVideo", produces="video/mp4")
+    // public @ResponseBody byte[] getVideoById(Long id){
+    //     return getFileById(id);
+    // }
 
-    @GetMapping(value="getAudio", produces="audio/mp4")
-    public @ResponseBody byte[] getAudioById(Long id){
-        return getFileById(id);
-    }
+    // @GetMapping(value="getAudio", produces="audio/mp4")
+    // public @ResponseBody byte[] getAudioById(Long id){
+    //     return getFileById(id);
+    // }
 
-    private byte[] getFileById(Long id) {
-        Optional<BinaryFile> binaryFile = binaryFileRepository.findById(id);
-        File file = new File(binaryFile.get().getFileName());
-        int length = (int) (file.length());
-        FileInputStream fin;
-        byte[] bytecodes = null;
-        DataInputStream in = null;
-        try {
-            fin = new FileInputStream(file);
-            in = new DataInputStream(fin);
-            bytecodes = new byte[length];
-            in.readFully(bytecodes);
-            in.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally{
+    // private byte[] getFileById(Long id) {
+    //     Optional<BinaryFile> binaryFile = binaryFileRepository.findById(id);
+    //     File file = new File(binaryFile.get().getFileName());
+    //     int length = (int) (file.length());
+    //     FileInputStream fin;
+    //     byte[] bytecodes = null;
+    //     DataInputStream in = null;
+    //     try {
+    //         fin = new FileInputStream(file);
+    //         in = new DataInputStream(fin);
+    //         bytecodes = new byte[length];
+    //         in.readFully(bytecodes);
+    //         in.close();
+    //     } catch (FileNotFoundException e) {
+    //         e.printStackTrace();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }finally{
 
-        }
-        return bytecodes;
-    }
+    //     }
+    //     return bytecodes;
+    // }
 }
